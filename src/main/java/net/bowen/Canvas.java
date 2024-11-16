@@ -72,6 +72,11 @@ public class Canvas extends JPanel {
 
                 UserData userData = body.getUserData() != null ? (UserData) body.getUserData() : UserData.DEFAULT_DATA;
 
+                if (userData.trackTracer != null) {
+                    userData.trackTracer.add(xy);
+                    userData.trackTracer.drawPoints(Color.CYAN, g2d);
+                }
+
                 if (c instanceof Polygon) {
                     fillPolygon(xy, angle, (Polygon) c, userData.color, g2d);
                 } else if (c instanceof Circle) {

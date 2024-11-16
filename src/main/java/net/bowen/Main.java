@@ -50,6 +50,7 @@ public class Main extends JFrame {
         pendulum.addFixture(pendulumFixture);
         pendulum.translate(30, 50);
         pendulum.setMass(MassType.NORMAL);
+        pendulum.setUserData(UserData.create(new TrackTracer(500, 2)));
         world.addBody(pendulum);
 
         // Pendulum joint
@@ -61,9 +62,11 @@ public class Main extends JFrame {
         // Falling circle
         Body circle = new Body();
         BodyFixture circleFixture = new BodyFixture(Geometry.createCircle(10));
+        circleFixture.setRestitution(1);
         circle.addFixture(circleFixture);
         circle.translate(0, 0);
         circle.setMass(MassType.NORMAL);
+        circle.setUserData(UserData.create(new TrackTracer(500, 2)));
         world.addBody(circle);
 
         // Falling rect
