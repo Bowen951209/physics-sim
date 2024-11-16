@@ -2,11 +2,13 @@ package net.bowen;
 
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.world.World;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -32,6 +34,29 @@ public class Main extends JFrame {
 
     private World<Body> getWorld() {
         World<Body> world = new World<>();
+
+        // Static circle
+        Body staticCircle = new Body();
+        BodyFixture staticCircleFixture = new BodyFixture(Geometry.createCircle(5));
+        staticCircle.addFixture(staticCircleFixture);
+        staticCircle.translate(0, 50);
+        staticCircle.setMass(MassType.INFINITE);
+        staticCircle.setUserData(UserData.create(Color.PINK));
+        world.addBody(staticCircle);
+
+        // Pendulum circle
+        Body pendulum = new Body();
+        BodyFixture pendulumFixture = new BodyFixture(Geometry.createCircle(5));
+        pendulum.addFixture(pendulumFixture);
+        pendulum.translate(30, 50);
+        pendulum.setMass(MassType.NORMAL);
+        world.addBody(pendulum);
+
+        // Pendulum joint
+        RevoluteJoint<Body> pendulumJoint = new RevoluteJoint<>(pendulum, staticCircle, staticCircle.getWorldCenter());
+        pendulumJoint.setUserData(UserData.create(Color.CYAN));
+        world.addJoint(pendulumJoint);
+
 
         // Falling circle
         Body circle = new Body();
