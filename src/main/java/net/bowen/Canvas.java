@@ -2,16 +2,16 @@ package net.bowen;
 
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
-import org.dyn4j.geometry.*;
+import org.dyn4j.geometry.Circle;
+import org.dyn4j.geometry.Convex;
 import org.dyn4j.geometry.Polygon;
-import org.dyn4j.geometry.Rectangle;
+import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
 
 public class Canvas extends JPanel {
     private final World<Body> world;
