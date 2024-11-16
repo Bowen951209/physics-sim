@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.bowen'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation 'org.dyn4j:dyn4j:5.0.2'
+}
+
+test {
+    useJUnitPlatform()
+}
