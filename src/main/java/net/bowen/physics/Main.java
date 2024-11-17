@@ -1,4 +1,4 @@
-package net.bowen;
+package net.bowen.physics;
 
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;

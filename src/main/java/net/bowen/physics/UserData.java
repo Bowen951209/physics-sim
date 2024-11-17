@@ -1,4 +1,4 @@
-package net.bowen;
+package net.bowen.physics;
 
 import java.awt.*;
 
