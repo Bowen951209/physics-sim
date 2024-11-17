@@ -1,10 +1,12 @@
 package net.bowen.physics;
 
+import net.bowen.physics.bodies.Chain;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 
 import javax.swing.*;
@@ -58,6 +60,8 @@ public class Main extends JFrame {
         pendulumJoint.setUserData(UserData.create(Color.CYAN));
         world.addJoint(pendulumJoint);
 
+        Chain chain = new Chain(new Vector2(-100, 150), new Vector2(100, 150), 20, 0.8, 2);
+        chain.addToWorld(world);
 
         // Falling circle
         Body circle = new Body();
