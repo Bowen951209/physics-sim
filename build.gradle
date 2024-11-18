@@ -1,9 +1,16 @@
+//file:noinspection ConfigurationAvoidance
 plugins {
     id 'java'
 }
 
 group = 'net.bowen'
 version = '1.0-SNAPSHOT'
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     mavenCentral()
