@@ -4,6 +4,7 @@ import net.bowen.physics.bodies.Chain;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.joint.RevoluteJoint;
+import org.dyn4j.dynamics.joint.WeldJoint;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
@@ -15,7 +16,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Main extends JFrame {
-    private Main() {
+    private Main(World<Body> world) {
         setTitle("Physics Simulation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addKeyListener(new KeyAdapter() {
@@ -25,16 +26,54 @@ public class Main extends JFrame {
                     System.exit(0);
             }
         });
-        setSize(800, 600);
+        setSize(1200, 800);
 
-        Canvas canvas = new Canvas(getWorld());
+        Canvas canvas = new Canvas(world);
         getContentPane().add(canvas);
         setVisible(true);
         SwingUtilities.invokeLater(canvas::play);
 
     }
 
-    private World<Body> getWorld() {
+    private static World<Body> getChainAroundCircle() {
+        World<Body> world = new World<>();
+
+        // Static circle
+        Body staticCircle = new Body();
+        BodyFixture staticCircleFixture = new BodyFixture(Geometry.createCircle(50));
+        staticCircle.addFixture(staticCircleFixture);
+        staticCircle.translate(0, 0);
+        staticCircle.setMass(MassType.INFINITE);
+        staticCircle.setUserData(UserData.create(Color.WHITE));
+        world.addBody(staticCircle);
+
+        // Chain
+        Chain chain = new Chain(new Vector2(0, 50), new Vector2(400, 50), 50, 4, 4);
+        chain.addToWorld(world);
+
+        // Pin the chain head
+        Body chainHead = chain.getBody(0);
+        chainHead.setMass(MassType.INFINITE);
+
+        // Pin a pendulum to chain tail
+        Body chainTail = chain.getBody(49);
+        Body pendulum = new Body();
+        BodyFixture pendulumFixture = new BodyFixture(Geometry.createCircle(5));
+        pendulum.addFixture(pendulumFixture);
+        pendulum.translate(400, 50);
+        pendulum.setMass(MassType.NORMAL);
+        pendulum.setUserData(UserData.create(new TrackTracer(800, 2)));
+        world.addBody(pendulum);
+
+        // Pendulum joint
+        WeldJoint<Body> weldJoint = new WeldJoint<>(pendulum, chainTail, chainTail.getWorldCenter());
+        world.addJoint(weldJoint);
+
+
+        return world;
+    }
+
+    private static World<Body> getDefaultDemoWorld() {
         World<Body> world = new World<>();
 
         // Static circle
@@ -94,6 +133,15 @@ public class Main extends JFrame {
     }
 
     public static void main(String[] args) {
-        new Main();
+        World<Body> world;
+        if (args.length > 0) {
+            if (Integer.parseInt(args[0]) == 1) {
+                world = getChainAroundCircle();
+            } else {
+                world = getDefaultDemoWorld();
+            }
+        } else world = getDefaultDemoWorld();
+
+        new Main(world);
     }
 }
