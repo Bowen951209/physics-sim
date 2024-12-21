@@ -24,7 +24,6 @@ public class Main extends JFrame {
         getContentPane().add(canvas);
         setVisible(true);
         SwingUtilities.invokeLater(canvas::play);
-
     }
 
     public static void main(String[] args) {

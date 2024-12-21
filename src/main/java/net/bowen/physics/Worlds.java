@@ -24,6 +24,10 @@ public class Worlds {
                 System.out.println("Chain around circle world loaded.");
                 world = chainAroundCircle();
             }
+            case 2 -> {
+                System.out.println("Radiation with gravity world loaded.");
+                world = radiationWithGravity();
+            }
             default -> throw new IllegalArgumentException("Invalid world index.");
         }
 
@@ -123,6 +127,29 @@ public class Worlds {
         WeldJoint<Body> weldJoint = new WeldJoint<>(pendulum, chainTail, chainTail.getWorldCenter());
         world.addJoint(weldJoint);
 
+
+        return world;
+    }
+
+    public static World<Body> radiationWithGravity() {
+        World<Body> world = new World<>();
+
+        int numBalls = 100;
+        for (int i = 0; i < numBalls; i++) {
+            Body ball = new Body();
+            BodyFixture ballFixture = new BodyFixture(Geometry.createCircle(5));
+            ballFixture.setFilter(filter -> false);// No collisions allowed
+            ball.addFixture(ballFixture);
+            ball.translate(0, 0);
+            ball.setMass(MassType.NORMAL);
+
+            double theta = Math.PI * 2 / numBalls * i;
+            Vector2 impulse = new Vector2(Math.cos(theta), Math.sin(theta)).multiply(3000);
+            ball.applyImpulse(impulse);
+
+            ball.setUserData(UserData.create(new TrackTracer(250, 2)));
+            world.addBody(ball);
+        }
 
         return world;
     }

@@ -16,8 +16,12 @@ public class WorldSelector extends JFrame {
         JButton chainAroundCircleWorldBtn = new JButton("Chain Around Circle World");
         chainAroundCircleWorldBtn.addActionListener(actionEvent -> new Main(Worlds.getWorldByIndex(1)));
 
+        JButton radiationWithGravityWorldBtn = new JButton("Radiation With Gravity World");
+        radiationWithGravityWorldBtn.addActionListener(actionEvent -> new Main(Worlds.getWorldByIndex(2)));
+
         add(defaultWorldBtn);
         add(chainAroundCircleWorldBtn);
+        add(radiationWithGravityWorldBtn);
 
         setVisible(true);
     }
