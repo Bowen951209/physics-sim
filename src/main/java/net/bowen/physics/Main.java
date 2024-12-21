@@ -8,7 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Main extends JFrame {
-    private Main(World<Body> world) {
+    public Main(World<Body> world) {
         setTitle("Physics Simulation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addKeyListener(new KeyAdapter() {
@@ -30,6 +30,9 @@ public class Main extends JFrame {
     public static void main(String[] args) {
         if (args.length > 0) {
             new Main(Worlds.getWorldByIndex(Integer.parseInt(args[0])));
-        } else new Main(Worlds.defaultWorld());
+        } else {
+            System.out.println("No world index provided. Opening world selector.");
+            new WorldSelector();
+        }
     }
 }
